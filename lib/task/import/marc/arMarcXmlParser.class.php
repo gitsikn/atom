@@ -182,16 +182,28 @@ class arMarcXmlParser extends QubitSaxParser
   {
     $this->log('Creating: ' . $this->termData['prefLabel']);
 
-    /*
-    if ($this->termData['prefLabel'] == 'Galleria delle statue (Museo Pio-Clementino, Vatican City)')
+    // Add term
+    $this->term = new QubitTerm();
+    $this->term->taxonomy = $this->taxonomy;
+    $this->term->name = $this->termData['prefLabel'];
+    $this->term->save();
+
+    // Add alternative labels
+    foreach($this->termData['altLabels'] as $label)
     {
-      $this->log(json_encode($this->termData, JSON_PRETTY_PRINT));
+      $otherName = new QubitOtherName;
+      $otherName->objectId = $this->term->id;
+      $otherName->name = $label;
+      $otherName->save();
     }
 
-    $this->term = new QubitTerm();
-    $contHeadIdent = 'http://id.worldcat.org/fast/' . $this->termData['fastIdentifier'];
-    $this->term->save();
-    */
+    // Add source note
+    $note = new QubitNote;
+    $note->objectId = $this->term->id;
+    $note->typeId = QubitTerm::SOURCE_NOTE_ID;
+    $note->content = 'http://id.worldcat.org/fast/' . $this->termData['fastIdentifier'];
+    $note->culture = 'en';
+    $note->save();
 
     $this->termCounter++;
   }
