@@ -191,6 +191,14 @@ class arMarcXmlParser extends QubitSaxParser
       $term->culture = 'en';
       $term->save();
 
+      // Add display note
+      $note = new QubitNote;
+      $note->objectId = $term->id;
+      $note->typeId = QubitTerm::DISPLAY_NOTE_ID;
+      $note->content = 'This ontology contains information from FAST (Faceted Application of Subject Terminology) Data which is made available by OCLC Online Computer Library Center, Inc. under the ODC Attribution License.';
+      $note->culture = 'en';
+      $note->save();
+
       $this->parentTerm = $term;
     }
 
@@ -218,7 +226,6 @@ class arMarcXmlParser extends QubitSaxParser
       $this->broaderTerms[$this->termData['prefLabel']] = $this->termData['broaderTerms'];
     }
 
-/*
     // Add source note
     $note = new QubitNote;
     $note->objectId = $this->term->id;
@@ -226,7 +233,6 @@ class arMarcXmlParser extends QubitSaxParser
     $note->content = 'http://id.worldcat.org/fast/' . $this->termData['fastIdentifier'];
     $note->culture = 'en';
     $note->save();
-*/
 
     $this->termCounter++;
   }
