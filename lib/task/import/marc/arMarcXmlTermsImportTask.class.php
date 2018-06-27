@@ -84,5 +84,9 @@ EOF;
       $errorData = $parser->getErrorData();
       $this->log($this->context->i18n->__('SAX xml parse error %code% on line %line% in input file: %message%', array('%code%' => $errorData['code'], '%message%' => $errorData['string'], '%line%' => $errorData['line'])));
     }
+    else
+    {
+      $parser->finish();
+    }
   }
 }

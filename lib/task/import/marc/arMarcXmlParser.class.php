@@ -27,6 +27,9 @@ class arMarcXmlParser extends QubitSaxParser
   protected $currentTagAttr;
   protected $currentLabel;
 
+  protected $parentTerm;
+  protected $broaderTerms;
+
   public function __construct($dispatcher, $formatter, $taxonomy)
   {
     parent::__construct();
@@ -180,11 +183,23 @@ class arMarcXmlParser extends QubitSaxParser
 
   protected function marc_recordTag()
   {
+    if (!isset($this->parentTerm))
+    {
+      $term = new QubitTerm();
+      $term->taxonomy = $this->taxonomy;
+      $term->name = 'FAST Data Ontology';
+      $term->culture = 'en';
+      $term->save();
+
+      $this->parentTerm = $term;
+    }
+
     $this->log('Creating: ' . $this->termData['prefLabel']);
 
     // Add term
     $this->term = new QubitTerm();
     $this->term->taxonomy = $this->taxonomy;
+    $this->term->parentId = $this->parentTerm->id;
     $this->term->name = $this->termData['prefLabel'];
     $this->term->save();
 
@@ -197,6 +212,13 @@ class arMarcXmlParser extends QubitSaxParser
       $otherName->save();
     }
 
+    // Take note of any term relations
+    if (count($this->termData['broaderTerms']))
+    {
+      $this->broaderTerms[$this->termData['prefLabel']] = $this->termData['broaderTerms'];
+    }
+
+/*
     // Add source note
     $note = new QubitNote;
     $note->objectId = $this->term->id;
@@ -204,6 +226,7 @@ class arMarcXmlParser extends QubitSaxParser
     $note->content = 'http://id.worldcat.org/fast/' . $this->termData['fastIdentifier'];
     $note->culture = 'en';
     $note->save();
+*/
 
     $this->termCounter++;
   }
@@ -277,6 +300,35 @@ class arMarcXmlParser extends QubitSaxParser
         }
 
         break;
+    }
+  }
+
+  public function finish()
+  {
+    foreach($this->broaderTerms as $termName => $terms)
+    {
+      // Add term relations
+      foreach($terms as $broadTerm)
+      {
+        $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
+          WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
+
+        $statement = QubitFlatfileImport::sqlQuery(
+          $query,
+          array(QubitTaxonomy::SUBJECT_ID, $broadTerm['prefLabel'], 'en')
+        );
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+        if ($result)
+        {
+          $term = QubitTerm::getById($result->id);
+          print "Found ". $result->id ."\n";
+        }
+        else
+        {
+          # TODO
+        }
+      }
     }
   }
 }
