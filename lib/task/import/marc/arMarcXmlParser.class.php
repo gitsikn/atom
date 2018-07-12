@@ -328,10 +328,11 @@ class arMarcXmlParser extends QubitSaxParser
         if ($result)
         {
           $term = QubitTerm::getById($result->id);
-          print "Found ". $result->id ."\n";
+          print "Found ". $broadTerm['prefLabel'] .'('. $result->id .")\n";
         }
         else
         {
+          print "Missing ". $broadTerm['prefLabel'] ."\n";
           # TODO
         }
       }
