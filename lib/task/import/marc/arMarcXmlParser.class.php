@@ -226,6 +226,11 @@ class arMarcXmlParser extends QubitSaxParser
       $this->broaderTerms[$this->termData['prefLabel']] = $this->termData['broaderTerms'];
     }
 
+    if (count($this->termData['relatedTerms']))
+    {
+      $this->relatedTerms[$this->termData['prefLabel']] = $this->termData['relatedTerms'];
+    }
+
     // Add source note
     $note = new QubitNote;
     $note->objectId = $this->term->id;
