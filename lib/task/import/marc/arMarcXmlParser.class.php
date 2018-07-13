@@ -29,6 +29,7 @@ class arMarcXmlParser extends QubitSaxParser
 
   protected $parentTerm;
   protected $broaderTerms;
+  protected $relatedTerms;
 
   public function __construct($dispatcher, $formatter, $taxonomy)
   {
@@ -318,28 +319,103 @@ class arMarcXmlParser extends QubitSaxParser
   {
     foreach($this->broaderTerms as $termName => $terms)
     {
-      // Add term relations
-      foreach($terms as $broadTerm)
+      // Fetch term, by name, to get ID
+      $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
+        WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
+
+      $statement = QubitFlatfileImport::sqlQuery(
+        $query,
+        array(QubitTaxonomy::SUBJECT_ID, $termName, 'en')
+      );
+
+      $termResult = $statement->fetch(PDO::FETCH_OBJ);
+
+      if ($termResult)
       {
-        $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
-          WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
-
-        $statement = QubitFlatfileImport::sqlQuery(
-          $query,
-          array(QubitTaxonomy::SUBJECT_ID, $broadTerm['prefLabel'], 'en')
-        );
-
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-        if ($result)
+        // Add term relations
+        foreach($terms as $broadTerm)
         {
-          $term = QubitTerm::getById($result->id);
-          print "Found ". $broadTerm['prefLabel'] .'('. $result->id .")\n";
+          $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
+            WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
+
+          $statement = QubitFlatfileImport::sqlQuery(
+            $query,
+            array(QubitTaxonomy::SUBJECT_ID, $broadTerm['prefLabel'], 'en')
+          );
+
+          $result = $statement->fetch(PDO::FETCH_OBJ);
+          if ($result)
+          {
+            print "Found broad ". $broadTerm['prefLabel'] .'('. $result->id .")\n";
+
+            $term = QubitTerm::getById($termResult->id);
+            $term->parentId = $result->id;
+            $term->save();
+
+            // Use the first found broad term as in AtoM you can only have one
+            break;
+          }
+          else
+          {
+            print "Missing broad ". $broadTerm['prefLabel'] ."\n";
+            # TODO
+          }
         }
-        else
+      }
+      else
+      {
+        print "Fatal error... missing '". $termName ."'\n";
+        exit();
+      }
+    }
+
+    foreach($this->relatedTerms as $termName => $terms)
+    {
+      // Fetch term, by name, to get ID
+      $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
+        WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
+
+      $statement = QubitFlatfileImport::sqlQuery(
+        $query,
+        array(QubitTaxonomy::SUBJECT_ID, $termName, 'en')
+      );
+
+      $termResult = $statement->fetch(PDO::FETCH_OBJ);
+
+      if ($termResult)
+      {
+        // Add term relations
+        foreach($terms as $broadTerm)
         {
-          print "Missing ". $broadTerm['prefLabel'] ."\n";
-          # TODO
+          $query = "SELECT t.id FROM term t LEFT JOIN term_i18n ti ON t.id=ti.id \r
+            WHERE t.taxonomy_id=? AND ti.name=? AND ti.culture=?";
+
+          $statement = QubitFlatfileImport::sqlQuery(
+            $query,
+            array(QubitTaxonomy::SUBJECT_ID, $broadTerm['prefLabel'], 'en')
+          );
+
+          $result = $statement->fetch(PDO::FETCH_OBJ);
+          if ($result)
+          {
+            print "Found related ". $broadTerm['prefLabel'] .'('. $result->id .")\n";
+
+            $relation = new QubitRelation;
+            $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
+            $relation->subjectId = $termResult->id;
+            $relation->objectId = $result->id;
+            $relation->save();
+          }
+          else
+          {
+            print "Missing related ". $broadTerm['prefLabel'] ."\n";
+          }
         }
+      }
+      else
+      {
+        print "Fatal error... missing '". $termName ."'\n";
+        exit();
       }
     }
   }
