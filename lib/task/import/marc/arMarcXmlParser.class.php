@@ -45,12 +45,12 @@ class arMarcXmlParser extends QubitSaxParser
    * Tags functions
    */
 
-  protected function marc_collectionTagInit()
+  protected function mx_collectionTagInit()
   {
     $this->log(sprintf('Starting collection import to "%s" taxonomy:', $this->taxonomy));
   }
 
-  protected function marc_recordTagInit()
+  protected function mx_recordTagInit()
   {
     // Initiate term data
     $this->termData = array(
@@ -63,7 +63,7 @@ class arMarcXmlParser extends QubitSaxParser
     );
   }
 
-  protected function marc_datafieldTagInit()
+  protected function mx_datafieldTagInit()
   {
     // Get current tag, needed to determine termData
     // field in the subfield tag function bellow
@@ -77,7 +77,7 @@ class arMarcXmlParser extends QubitSaxParser
     );
   }
 
-  protected function marc_subfieldTag()
+  protected function mx_subfieldTag()
   {
     // A tag attribute from the datafield is required
     if (!isset($this->currentTagAttr))
@@ -153,7 +153,7 @@ class arMarcXmlParser extends QubitSaxParser
     }
   }
 
-  protected function marc_datafieldTag()
+  protected function mx_datafieldTag()
   {
     // Save current label to term data if needed
     if (!isset($this->currentLabel['type']) || strlen($this->currentLabel['value']) == 0)
@@ -182,8 +182,11 @@ class arMarcXmlParser extends QubitSaxParser
     }
   }
 
-  protected function marc_recordTag()
+  protected function mx_recordTag()
   {
+print_r($this->termData);
+exit();
+
     if (!isset($this->parentTerm))
     {
       $term = new QubitTerm();
@@ -243,7 +246,7 @@ class arMarcXmlParser extends QubitSaxParser
     $this->termCounter++;
   }
 
-  protected function marc_collectionTag()
+  protected function mx_collectionTag()
   {
     $this->log(sprintf('Collection import finished, %d terms have been imported.', $this->termCounter));
   }
