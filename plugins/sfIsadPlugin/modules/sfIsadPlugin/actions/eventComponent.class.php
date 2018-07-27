@@ -127,8 +127,20 @@ class sfIsadPluginEventComponent extends InformationObjectEventComponent
     {
       if (isset($item->id) && false === array_search($item->id, $finalEventIds))
       {
-        $item->indexOnSave = false;
-        $item->delete();
+        // Only delete event if it has no associated actor
+        if (null === $item->actor)
+        {
+          $item->indexOnSave = false;
+          $item->delete();
+        }
+        else
+        {
+          // Handle specially as data wasn't created using ISAD template
+          $item->startDate = null;
+          $item->endDate = null;
+          $item->date = null;
+          $item->save();
+        }
       }
     }
   }
