@@ -31,6 +31,8 @@ abstract class csvImportBaseTask extends arBaseTask
    */
   protected function configure()
   {
+    parent::configure();
+
     $this->addArguments(array(
       new sfCommandArgument('filename', sfCommandArgument::REQUIRED, 'The input file (csv format).')
     ));

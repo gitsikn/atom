@@ -31,6 +31,13 @@ abstract class arBaseTask extends sfBaseTask
     $formatter->setMaxLineSize(self::MAX_LINE_SIZE);
   }
 
+  protected function configure()
+  {
+    $this->addOptions(array(
+      new sfCommandOption('user', null, sfCommandOption::PARAMETER_OPTIONAL, 'Username', null)
+    ));
+  }
+
   /**
    * @see sfTask
    */
@@ -38,6 +45,18 @@ abstract class arBaseTask extends sfBaseTask
   {
     $configuration = ProjectConfiguration::getApplicationConfiguration('qubit', 'cli', false);
     $this->context = sfContext::createInstance($configuration);
+
+    if (!empty($options['user']))
+    {
+      $criteria = new Criteria;
+      $criteria->add(QubitUser::USERNAME, $options['user']);
+
+      if (null != $user = QubitUser::getOne($criteria))
+      {
+        $this->context->getUser()->signIn($user);
+      }
+    }
+
     sfConfig::add(QubitSetting::getSettingsArray());
   }
 }

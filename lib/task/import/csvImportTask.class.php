@@ -165,7 +165,7 @@ EOF;
     // Define import
     $import = new QubitFlatfileImport(array(
       // Pass context
-      'context' => sfContext::createInstance($this->configuration),
+      'context' => $this->context,
 
       // What type of object are we importing?
       'className' => 'QubitInformationObject',
