@@ -3,12 +3,12 @@ version: '3.3'
 services:
 
 #Elasticsearch
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
-    environment:
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms640m -Xmx640m
+  #elasticsearch:
+    #image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
+    #environment:
+      #- bootstrap.memory_lock=true
+      #- xpack.security.enabled=false
+      #- ES_JAVA_OPTS=-Xms640m -Xmx640m
       
 #  gunakan referensi pada https://docs.docker.com/compose/compose-file/ konfigurasi di bawah digunakan untuk untuk non swarm mode container
     #ulimits:
@@ -76,11 +76,35 @@ services:
   gearmand:
     image: artefactual/gearmand
     expose:
-      - "4730"
+      - 4730
     networks:
       - net_cache
       - net_jobs  
-
+  
+  #Atom
+  atom:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    command: fpm
+    volumes:
+      - ../:/atom/src:rw
+    networks:
+      - net_cache
+      - net_db
+      - net_http
+      - net_jobs
+      - net_search
+    environment:
+      - ATOM_DEVELOPMENT_MODE=on
+      - ATOM_ELASTICSEARCH_HOST=elasticsearch
+      - ATOM_MEMCACHED_HOST=memcached
+      - ATOM_GEARMAND_HOST=gearmand
+      - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8
+      - ATOM_MYSQL_USERNAME=atom
+      - ATOM_MYSQL_PASSWORD=atom_12345
+      - ATOM_DEBUG_IP=172.22.0.1
+      
 volumes:
   percona_data:
     driver: local
