@@ -28,24 +28,24 @@ services:
           #cpus: '0.25'
           #memory: 20M
           
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 1024M
-        reservations:
-          cpus: '0.25'
-          memory: 512M
-      mode: global
+   # deploy:
+      #resources:
+        #limits:
+        #  cpus: '0.50'
+          #memory: 1024M
+        #reservations:
+         # cpus: '0.25'
+         # memory: 512M
+     # mode: global
       
-    ports:
-      - 63002:9200
-    expose:
-      - 9300
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - net_search
+    #ports:
+      #- 63002:9200
+    #expose:
+      #- 9300
+    #volumes:
+      #- elasticsearch_data:/usr/share/elasticsearch/data
+    #networks:
+      #- net_search
 
 #percona_database
   percona:
