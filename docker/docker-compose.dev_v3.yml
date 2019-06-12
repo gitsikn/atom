@@ -126,3 +126,5 @@ networks:
     driver: overlay
   net_search:
     driver: overlay
+  traefik-public:
+    external: true
