@@ -18,16 +18,7 @@ services:
    # mem_limit: 1g
 
 # untuk batasan resource dapat menggunakan seperti contoh di bawah
-
-    #deploy:
-      #resources:
-        #limits:
-          #cpus: '0.50'
-          #memory: 50M
-        #reservations:
-          #cpus: '0.25'
-          #memory: 20M
-          
+        
    # deploy:
       #resources:
         #limits:
@@ -58,7 +49,7 @@ services:
     volumes:
       - percona_data:/var/lib/mysql:rw
       # cek penulisan volume
-      #- ./etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - ./etc/mysql/conf.d/:/etc/mysql/conf.d:ro
     expose:
       - 3306
     networks:
@@ -82,28 +73,28 @@ services:
       - net_jobs  
   
   #Atom
-  atom:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    command: fpm
-    volumes:
-      - ../:/atom/src:rw
-    networks:
-      - net_cache
-      - net_db
-      - net_http
-      - net_jobs
-      - net_search
-    environment:
-      - ATOM_DEVELOPMENT_MODE=on
-      - ATOM_ELASTICSEARCH_HOST=elasticsearch
-      - ATOM_MEMCACHED_HOST=memcached
-      - ATOM_GEARMAND_HOST=gearmand
-      - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8
-      - ATOM_MYSQL_USERNAME=atom
-      - ATOM_MYSQL_PASSWORD=atom_12345
-      - ATOM_DEBUG_IP=172.22.0.1
+  #atom:
+  #  build:
+  #    context: ../
+  #    dockerfile: ./docker/Dockerfile
+  #  command: fpm
+  #  volumes:
+  #    - ../:/atom/src:rw
+  #  networks:
+  #    - net_cache
+  #    - net_db
+  #    - net_http
+  #    - net_jobs
+  #    - net_search
+  #  environment:
+  #    - ATOM_DEVELOPMENT_MODE=on
+  #    - ATOM_ELASTICSEARCH_HOST=elasticsearch
+  #    - ATOM_MEMCACHED_HOST=memcached
+  #    - ATOM_GEARMAND_HOST=gearmand
+  #    - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8
+  #    - ATOM_MYSQL_USERNAME=atom
+  #    - ATOM_MYSQL_PASSWORD=atom_12345
+  #    - ATOM_DEBUG_IP=172.22.0.1
       
 volumes:
   percona_data:
