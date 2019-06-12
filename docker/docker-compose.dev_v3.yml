@@ -63,29 +63,51 @@ Elasticsearch
       - net_cache
       - net_jobs  
   
-  #Atom
-  #atom:
-  #  build:
-  #    context: ../
-  #    dockerfile: ./docker/Dockerfile
-  #  command: fpm
-  #  volumes:
-  #    - ../:/atom/src:rw
-  #  networks:
-  #    - net_cache
-  #    - net_db
-  #    - net_http
-  #    - net_jobs
-  #    - net_search
-  #  environment:
-  #    - ATOM_DEVELOPMENT_MODE=on
-  #    - ATOM_ELASTICSEARCH_HOST=elasticsearch
-  #    - ATOM_MEMCACHED_HOST=memcached
-  #    - ATOM_GEARMAND_HOST=gearmand
-  #    - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8
-  #    - ATOM_MYSQL_USERNAME=atom
-  #    - ATOM_MYSQL_PASSWORD=atom_12345
-  #    - ATOM_DEBUG_IP=172.22.0.1
+#atom (source stable/2.4.x)      
+  atom:
+    image: pusatsiknjikn/atom:2.4.x
+    command: fpm
+    volumes:
+      - ../:/atom/src:rw
+    networks:
+      - net_cache
+      - net_db
+      - net_http
+      - net_jobs
+      - net_search
+
+    environment:
+      - ATOM_DEVELOPMENT_MODE=on
+      - ATOM_ELASTICSEARCH_HOST=elasticsearch
+      - ATOM_MEMCACHED_HOST=memcached
+      - ATOM_GEARMAND_HOST=gearmand
+      - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8
+      - ATOM_MYSQL_USERNAME=atom
+      - ATOM_MYSQL_PASSWORD=atom_12345
+      - ATOM_DEBUG_IP=172.22.0.1
+ #nginx
+  nginx:
+    image: nginx:latest
+    ports:
+      - 63001:8080
+    volumes:
+      - ../:/atom/src:ro
+      - ./etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - net_http
+      - traefik-public
+       
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+             
+    depends_on:
+      - atom
       
 volumes:
   percona_data:
