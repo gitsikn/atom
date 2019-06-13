@@ -41,24 +41,18 @@ Elasticsearch
       - percona_data:/var/lib/mysql:rw
       # cek penulisan volume
       - ./etc/mysql/conf.d/:/etc/mysql/conf.d:ro
-    #expose:
-    #  - 3306
     networks:
       - net_db
 #memcached
   memcached:
     image: memcached
     command: -p 11211 -m 128 -u memcache
-    #expose:
-    #  - 11211
     networks:
       - net_cache
       - net_jobs
 #gearmand
   gearmand:
     image: artefactual/gearmand
-    #expose:
-    #  - 4730
     networks:
       - net_cache
       - net_jobs  
