@@ -29,6 +29,7 @@ services:
     networks:
       - net_search
 
+#sesuaikan konfigurasi database
 #percona_database
   percona:
     image: percona:5.6
@@ -39,7 +40,7 @@ services:
       - MYSQL_PASSWORD=atom_12345
     volumes:
       - percona_data:/var/lib/mysql:rw
-      # cek penulisan volume
+      # sesuaikan lokasi volume 
       - ./etc/mysql/conf.d/:/etc/mysql/conf.d:ro
     networks:
       - net_db
@@ -61,6 +62,7 @@ services:
   nama_simpul:
     image: pusatsiknjikn/atom:2.4.x
     command: fpm
+    # sesuaikan lokasi volume 
     volumes:
       - ../:/nama_simpul/src:rw
     networks:
@@ -84,6 +86,8 @@ services:
     image: nginx:latest
     ports:
       - 63001:80
+      
+    # sesuaikan lokasi volume 
     volumes:
       - ../:/nama_simpul/src:ro
       - ./etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
@@ -99,7 +103,8 @@ services:
         reservations:
           cpus: '0.25'
           memory: 512M
-     
+          
+     # sesuaikan nama domain 
     labels:
       - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
       - traefik.enable=true
