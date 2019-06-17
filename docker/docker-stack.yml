@@ -93,8 +93,7 @@ services:
       - net_db
       - net_jobs
       - net_search
-      - traefik-public
-          
+   
     environment:
       - ATOM_DEVELOPMENT_MODE=on
       - ATOM_ELASTICSEARCH_HOST=elasticsearch
