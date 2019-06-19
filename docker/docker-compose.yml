@@ -26,12 +26,12 @@ services:
     environment:
       - "bootstrap.memory_lock=true"
       - "xpack.security.enabled=false"
-      - "ES_JAVA_OPTS=-Xms640m -Xmx640m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
+    mem_limit: 2g
     ports:
       - "63002:9200"
     expose:
