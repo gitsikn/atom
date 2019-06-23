@@ -41,7 +41,7 @@ services:
     volumes:
       - percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
-      - nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - /nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
     networks:
       - net_db
 #memcached
