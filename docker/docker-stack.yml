@@ -64,7 +64,7 @@ services:
     command: fpm
     # sesuaikan lokasi volume 
     volumes:
-      - ../:/nama_simpul/src:rw
+      - ../:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -87,7 +87,7 @@ services:
     image: pusatsiknjikn/atom:2.4.x
     command: worker
     volumes:
-      - /nama_simpul/:/nama_simpul/src:rw
+      - /nama_simpul/:/atom/src:rw
     networks:
       - net_cache
       - net_db
