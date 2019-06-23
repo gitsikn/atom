@@ -116,19 +116,19 @@ services:
     networks:
       - net_http
       - traefik-public
-         
+    deploy:     
      # sesuaikan nama domain 
-    labels:
-      - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
-      - traefik.enable=true
-      - traefik.port=80
-      - traefik.tags=traefik-public
-      - traefik.docker.network=traefik-public
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
+      labels:
+        - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
         
     depends_on:
       - nama_simpul
