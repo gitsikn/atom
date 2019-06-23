@@ -64,7 +64,7 @@ services:
     command: fpm
     # sesuaikan lokasi volume 
     volumes:
-      - ../:/atom/src:rw
+      - /nama_simpul/:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -101,7 +101,7 @@ services:
       - ATOM_GEARMAND_HOST=gearmand
       - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=nama_simpul;charset=utf8
       - ATOM_MYSQL_USERNAME=nama_simpul
-      - ATOM_MYSQL_PASSWORD=password
+      - ATOM_MYSQL_PASSWORD=atom_12345
 
  #nginx
   nginx:
@@ -111,21 +111,12 @@ services:
       
     # sesuaikan lokasi volume 
     volumes:
-      - ../:/nama_simpul/src:ro
-      - ./etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - /nama_simpul/:/atom/src:ro
+      - /nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
     networks:
       - net_http
       - traefik-public
-       
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 1024M
-        reservations:
-          cpus: '0.25'
-          memory: 512M
-          
+         
      # sesuaikan nama domain 
     labels:
       - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
