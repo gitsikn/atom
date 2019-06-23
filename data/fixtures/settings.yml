@@ -675,29 +675,11 @@ QubitSetting:
     deleteable: 0
     value: en
   QubitSetting_27:
-    name: fr
+    name: id
     scope: i18n_languages
     editable: 1
     deleteable: 1
-    value: fr
-  QubitSetting_28:
-    name: es
-    scope: i18n_languages
-    editable: 1
-    deleteable: 1
-    value: es
-  QubitSetting_29:
-    name: nl
-    scope: i18n_languages
-    editable: 1
-    deleteable: 1
-    value: nl
-  QubitSetting_30:
-    name: pt
-    scope: i18n_languages
-    editable: 1
-    deleteable: 1
-    value: pt
+    value: id
   QubitSetting_oai_authentication_enabled:
     name: oai_authentication_enabled
     scope: oai
