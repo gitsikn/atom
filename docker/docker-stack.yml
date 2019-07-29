@@ -22,8 +22,8 @@ services:
           memory: 512M
       mode: global
       
-    ports:
-      - 63002:9200
+   # ports:
+   #   - 63002:9200
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     networks:
@@ -59,7 +59,7 @@ services:
       - net_jobs  
   
 #atom (source stable/2.4.x)      
-  nama_simpul:
+  atom:
     image: pusatsiknjikn/atom:2.4.x
     command: fpm
     # sesuaikan lokasi volume 
@@ -83,7 +83,7 @@ services:
       - ATOM_DEBUG_IP=172.22.0.1
 
 #nama_simpul worker      
-  nama_simpul_worker:
+  worker:
     image: pusatsiknjikn/atom:2.4.x
     command: worker
     volumes:
@@ -106,8 +106,8 @@ services:
  #nginx
   nginx:
     image: nginx:latest
-    ports:
-      - 63001:80
+  #  ports:
+  #    - 63001:80
       
     # sesuaikan lokasi volume 
     volumes:
