@@ -1,30 +1,23 @@
-version: "3.2"
-
+version: "3.7"
 services:
-  a:
-    image: rbekker87/armhf-alpine:3.5
-    command: ping 127.0.0.1
-    networks:
-      - docknet
+  web:
+    image: nginx
     volumes:
-      - type: volume
-        source: vol_debug
-        target: /data
-        volume:
-          nocopy: true
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
+      - nginx.vol:/usr/share/nginx/html
+    ports:
+      - 8082:8082
+    networks:
+      - web
 
 networks:
-  docknet:
-    external: true
+  web:
+    driver: overlay
+    name: web
 
 volumes:
-  vol_debug:
+  nginx.vol:
     driver: local
     driver_opts:
       type: "nfs"
       o: addr=192.168.101.100,nolock,soft,rw
-      device: ":/mnt/docker_volume/"
+      device: ":/mnt/docker_volume"
