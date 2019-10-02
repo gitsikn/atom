@@ -41,7 +41,7 @@ services:
     volumes:
       - percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
-      - /nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - /mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
     networks:
       - net_db
 #memcached
@@ -64,7 +64,7 @@ services:
     command: fpm
     # sesuaikan lokasi volume 
     volumes:
-      - /nama_simpul/:/atom/src:rw
+      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -87,7 +87,7 @@ services:
     image: pusatsiknjikn/atom:2.4.x
     command: worker
     volumes:
-      - /nama_simpul/:/atom/src:rw
+      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -111,8 +111,8 @@ services:
       
     # sesuaikan lokasi volume 
     volumes:
-      - /nama_simpul/:/atom/src:ro
-      - /nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
+      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
     networks:
       - net_http
       - traefik-public
@@ -136,8 +136,16 @@ services:
 volumes:
   percona_data:
     driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.100,nolock,soft,rw
+      device: ":/mnt/docker_volume/nama_simpul"
   elasticsearch_data:
     driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.100,nolock,soft,rw
+      device: ":/mnt/docker_volume/nama_simpul"
 
 networks:
   net_cache:
