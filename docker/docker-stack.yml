@@ -138,13 +138,13 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: nfsvers=4,addr=192.168.101.100,nolock,soft,rw
+      o: nfsvers=4,addr=192.168.101.100,nolock,soft,uid=1000,gid=1000,rw
       device: ":/mnt/docker_volume/nama_simpul/percona_data"
   elasticsearch_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: nfsvers=4,addr=192.168.101.100,nolock,soft,rw
+      o: nfsvers=4,addr=192.168.101.100,nolock,soft,uid=1000,gid=1000,rw
       device: ":/mnt/docker_volume/nama_simpul/elasticsearch_data"
 
 networks:
