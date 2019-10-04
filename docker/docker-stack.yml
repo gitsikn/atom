@@ -12,15 +12,15 @@ services:
       
  #untuk batasan resource dapat menggunakan seperti contoh di bawah
         
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 1024M
-        reservations:
-          cpus: '0.25'
-          memory: 512M
-      mode: global
+    #deploy:
+    #  resources:
+    #   limits:
+    #      cpus: '0.50'
+    #      memory: 1024M
+    #    reservations:
+    #      cpus: '0.25'
+    #      memory: 512M
+    #  mode: global
       
    # ports:
    #   - 63002:9200
