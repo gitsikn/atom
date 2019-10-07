@@ -1,0 +1,162 @@
+version: '3.3'
+
+services:
+
+#Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
+    environment:
+      #- bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms640m -Xmx640m
+      
+ #untuk batasan resource dapat menggunakan seperti contoh di bawah
+        
+    #deploy:
+    #  resources:
+    #   limits:
+    #      cpus: '0.50'
+    #      memory: 1024M
+    #    reservations:
+    #      cpus: '0.25'
+    #      memory: 512M
+    #  mode: global
+      
+   # ports:
+   #   - 63002:9200
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - net_search
+
+#sesuaikan konfigurasi database
+#percona_database
+  percona:
+    image: percona:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+      - MYSQL_DATABASE=nama_simpul
+      - MYSQL_USER=nama_simpul
+      - MYSQL_PASSWORD=atom_12345
+    volumes:
+      - percona_data:/var/lib/mysql:rw
+      # sesuaikan lokasi volume 
+      - /mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+    networks:
+      - net_db
+#memcached
+  memcached:
+    image: memcached
+    command: -p 11211 -m 128 -u memcache
+    networks:
+      - net_cache
+      - net_jobs
+#gearmand
+  gearmand:
+    image: artefactual/gearmand
+    networks:
+      - net_cache
+      - net_jobs  
+  
+#atom (source stable/2.4.x)      
+  atom:
+    image: pusatsiknjikn/atom:2.4.x
+    command: fpm
+    # sesuaikan lokasi volume 
+    volumes:
+      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+    networks:
+      - net_cache
+      - net_db
+      - net_http
+      - net_jobs
+      - net_search
+
+    environment:
+      - ATOM_DEVELOPMENT_MODE=on
+      - ATOM_ELASTICSEARCH_HOST=elasticsearch
+      - ATOM_MEMCACHED_HOST=memcached
+      - ATOM_GEARMAND_HOST=gearmand
+      - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=nama_simpul;charset=utf8
+      - ATOM_MYSQL_USERNAME=nama_simpul
+      - ATOM_MYSQL_PASSWORD=atom_12345
+      - ATOM_DEBUG_IP=172.22.0.1
+
+#nama_simpul worker      
+  worker:
+    image: pusatsiknjikn/atom:2.4.x
+    command: worker
+    volumes:
+      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+    networks:
+      - net_cache
+      - net_db
+      - net_jobs
+      - net_search
+   
+    environment:
+      - ATOM_DEVELOPMENT_MODE=on
+      - ATOM_ELASTICSEARCH_HOST=elasticsearch
+      - ATOM_MEMCACHED_HOST=memcached
+      - ATOM_GEARMAND_HOST=gearmand
+      - ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=nama_simpul;charset=utf8
+      - ATOM_MYSQL_USERNAME=nama_simpul
+      - ATOM_MYSQL_PASSWORD=atom_12345
+
+ #nginx
+  nginx:
+    image: nginx:latest
+  #  ports:
+  #    - 63001:80
+      
+    # sesuaikan lokasi volume 
+    volumes:
+      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
+      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - net_http
+      - traefik-public
+    deploy:     
+     # sesuaikan nama domain 
+      labels:
+        - traefik.frontend.rule=Host:sikn.nama_simpul.go.id
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        
+    depends_on:
+      - nama_simpul
+      
+volumes:
+  percona_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.100,nolock,soft,rw
+      device: ":/mnt/docker_volume/nama_simpul/percona_data"
+  elasticsearch_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.100,nolock,rw
+      device: ":/mnt/docker_volume/nama_simpul/elasticsearch_data"
+
+networks:
+  net_cache:
+    driver: overlay
+  net_db:
+    driver: overlay
+  net_jobs:
+    driver: overlay
+  net_http:
+    driver: overlay
+  net_search:
+    driver: overlay
+  traefik-public:
+    external: true
