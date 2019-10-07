@@ -136,16 +136,8 @@ services:
 volumes:
   percona_data:
     driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=192.168.101.100,nolock,soft,rw
-      device: ":/mnt/docker_volume/nama_simpul/percona_data"
   elasticsearch_data:
     driver: local
-    driver_opts:
-      type: "nfs"
-      o: addr=192.168.101.100,nolock,rw
-      device: ":/mnt/docker_volume/nama_simpul/elasticsearch_data"
 
 networks:
   net_cache:
