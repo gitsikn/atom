@@ -70,7 +70,7 @@ services:
           memory: 256M
        reservations:
           cpus: '0.25'
-          memory: 256M
+          memory: 128M
     
     networks:
       - net_cache
@@ -87,7 +87,7 @@ services:
           memory: 256M
        reservations:
           cpus: '0.25'
-          memory: 256M
+          memory: 128M
           
     networks:
       - net_cache
@@ -107,7 +107,7 @@ services:
           memory: 512M
        reservations:
           cpus: '0.25'
-          memory: 256M
+          memory: 128M
     
     volumes:
       - /mnt/docker_volume/nama_simpul/:/atom/src:rw
