@@ -45,7 +45,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
@@ -66,7 +66,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
@@ -83,7 +83,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
@@ -103,7 +103,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
@@ -137,7 +137,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
@@ -170,7 +170,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 1024M
+          memory: 512M
         reservations:
           cpus: '0.25'
           memory: 512M
