@@ -15,6 +15,7 @@ services:
     deploy:
       replicas: 1
       resources:
+       replicas: 1
        limits:
           cpus: '0.50'
           memory: 1024M
