@@ -182,17 +182,7 @@ services:
     networks:
       - net_http
       - traefik-public
-     
-    deploy:
-      replicas: 1
-      resources:
-       limits:
-          cpus: '0.50'
-          memory: 512M
-       reservations:
-          cpus: '0.25'
-          memory: 512M
-          
+    deploy:      
      # sesuaikan nama domain 
       labels:
         - traefik.frontend.rule=Host:sikn.nama_simpul.go.id
