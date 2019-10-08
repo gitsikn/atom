@@ -174,18 +174,8 @@ services:
        reservations:
           cpus: '0.25'
           memory: 512M
-          
-    # sesuaikan lokasi volume 
-    volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
-      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - net_http
-      - traefik-public
-    deploy:      
-     # sesuaikan nama domain 
       labels:
-        - traefik.frontend.rule=Host:sikn.nama_simpul.go.id
+        - traefik.frontend.rule=Host:sikn.depokkota.go.id
         - traefik.enable=true
         - traefik.port=80
         - traefik.tags=traefik-public
@@ -194,8 +184,15 @@ services:
         - traefik.redirectorservice.frontend.entryPoints=http
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
         # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
-        
+        - traefik.webservice.frontend.entryPoints=https   
+          
+    # sesuaikan lokasi volume 
+    volumes:
+      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
+      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - net_http
+      - traefik-public       
     depends_on:
       - nama_simpul
       
