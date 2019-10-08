@@ -45,7 +45,7 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 256M
        reservations:
           cpus: '0.25'
           memory: 256M
@@ -66,10 +66,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 256M
+          memory: 64M
        reservations:
           cpus: '0.25'
-          memory: 128M
+          memory: 64M
     
     networks:
       - net_cache
@@ -83,10 +83,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 256M
+          memory: 64M
        reservations:
           cpus: '0.25'
-          memory: 128M
+          memory: 64M
           
     networks:
       - net_cache
@@ -103,10 +103,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 64M
        reservations:
           cpus: '0.25'
-          memory: 128M
+          memory: 64M
     
     volumes:
       - /mnt/docker_volume/nama_simpul/:/atom/src:rw
@@ -137,10 +137,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 64M
        reservations:
           cpus: '0.25'
-          memory: 256M
+          memory: 64M
     
     volumes:
       - /mnt/docker_volume/nama_simpul/:/atom/src:rw
@@ -170,10 +170,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 64M
        reservations:
           cpus: '0.25'
-          memory: 256M
+          memory: 64M
       labels:
         - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
         - traefik.enable=true
