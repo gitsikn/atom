@@ -48,7 +48,7 @@ services:
           memory: 512M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
           
     volumes:
       - percona_data:/var/lib/mysql:rw
@@ -66,10 +66,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 256M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
     
     networks:
       - net_cache
@@ -83,10 +83,10 @@ services:
       resources:
        limits:
           cpus: '0.50'
-          memory: 512M
+          memory: 256M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
           
     networks:
       - net_cache
@@ -106,7 +106,7 @@ services:
           memory: 512M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
     
     volumes:
       - /mnt/docker_volume/nama_simpul/:/atom/src:rw
@@ -140,7 +140,7 @@ services:
           memory: 512M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
     
     volumes:
       - /mnt/docker_volume/nama_simpul/:/atom/src:rw
@@ -173,7 +173,7 @@ services:
           memory: 512M
        reservations:
           cpus: '0.25'
-          memory: 512M
+          memory: 256M
       labels:
         - traefik.frontend.rule=Host:sikn.depokkota.go.id
         - traefik.enable=true
