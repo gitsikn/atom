@@ -175,7 +175,7 @@ services:
           cpus: '0.25'
           memory: 256M
       labels:
-        - traefik.frontend.rule=Host:sikn.depokkota.go.id
+        - traefik.frontend.rule=Host:nama_simpul.sikn.go.id
         - traefik.enable=true
         - traefik.port=80
         - traefik.tags=traefik-public
