@@ -12,15 +12,16 @@ services:
       
  #untuk batasan resource dapat menggunakan seperti contoh di bawah
         
-    #deploy:
-    #  resources:
-    #   limits:
-    #      cpus: '0.50'
-    #      memory: 1024M
-    #    reservations:
-    #      cpus: '0.25'
-    #      memory: 512M
-    #  mode: global
+    deploy:
+      replicas: 1
+      resources:
+       limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+     # mode: global
       
    # ports:
    #   - 63002:9200
@@ -38,6 +39,17 @@ services:
       - MYSQL_DATABASE=nama_simpul
       - MYSQL_USER=nama_simpul
       - MYSQL_PASSWORD=atom_12345
+      
+    deploy:
+      replicas: 1
+      resources:
+       limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+          
     volumes:
       - percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
