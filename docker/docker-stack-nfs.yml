@@ -53,7 +53,8 @@ services:
     volumes:
       - percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
-      - /mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      #- /mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - nama_simpul_mysql_conf:/etc/mysql/conf.d:ro
     networks:
       - net_db
 #memcached
@@ -109,7 +110,8 @@ services:
           memory: 64M
     
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      #- /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      - nama_simpul:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -143,7 +145,8 @@ services:
           memory: 64M
     
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      #- /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      nama_simpul:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -188,8 +191,10 @@ services:
           
     # sesuaikan lokasi volume 
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
-      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      #- /mnt/docker_volume/nama_simpul/:/atom/src:ro
+      #- /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - nama_simpul:/atom/src:ro
+      - nama_simpul_nginx_prod:/etc/nginx/nginx.conf:ro
     networks:
       - net_http
       - traefik-public       
@@ -201,14 +206,32 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.101.100,nolock,soft,rw
+      o: addr=192.168.101.30,nolock,soft,rw
       device: ":/mnt/docker_volume/nama_simpul/percona_data"
   elasticsearch_data:
     driver: local
     driver_opts:
       type: "nfs"
-      o: addr=192.168.101.100,nolock,rw
+      o: addr=192.168.101.130,nolock,rw
       device: ":/mnt/docker_volume/nama_simpul/elasticsearch_data"
+  nama_simpul:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.30,nolock,rw
+      device: ":/mnt/docker_volume/nama_simpul/"
+  nama_simpul_mysql_conf:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.30,nolock,rw
+      device: ":/mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d"
+   nama_simpul_nginx_prod:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: addr=192.168.101.30,nolock,rw
+      device: ":/mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf"
 
 networks:
   net_cache:
