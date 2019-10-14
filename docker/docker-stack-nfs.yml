@@ -146,7 +146,7 @@ services:
     
     volumes:
       #- /mnt/docker_volume/nama_simpul/:/atom/src:rw
-      nama_simpul:/atom/src:rw
+      - nama_simpul:/atom/src:rw
     networks:
       - net_cache
       - net_db
@@ -226,7 +226,7 @@ volumes:
       type: "nfs"
       o: addr=192.168.101.30,nolock,rw
       device: ":/mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d"
-   nama_simpul_nginx_prod:
+  nama_simpul_nginx_prod:
     driver: local
     driver_opts:
       type: "nfs"
