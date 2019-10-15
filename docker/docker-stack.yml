@@ -25,7 +25,10 @@ services:
    # ports:
    #   - 63002:9200
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
+      - /sikn/elasticsearch_data:/usr/share/elasticsearch/data
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_search
 
@@ -39,21 +42,30 @@ services:
       - MYSQL_USER=nama_simpul
       - MYSQL_PASSWORD=atom_12345
     volumes:
-      - percona_data:/var/lib/mysql:rw
+      - /sikn/nama_simpul/percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
-      - /mnt/docker_volume/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - /sikn/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_db
 #memcached
   memcached:
     image: memcached
     command: -p 11211 -m 128 -u memcache
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_cache
       - net_jobs
 #gearmand
   gearmand:
     image: artefactual/gearmand
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_cache
       - net_jobs  
@@ -64,7 +76,10 @@ services:
     command: fpm
     # sesuaikan lokasi volume 
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      - /sikn/nama_simpul/:/atom/src:rw
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_cache
       - net_db
@@ -87,7 +102,10 @@ services:
     image: pusatsiknjikn/atom:2.4.x
     command: worker
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:rw
+      - /sikn/nama_simpul/:/atom/src:rw
+    deploy:
+      placement:
+        constraints: [node.role == worker]
     networks:
       - net_cache
       - net_db
@@ -116,7 +134,9 @@ services:
     networks:
       - net_http
       - traefik-public
-    deploy:     
+    deploy:
+      placement:
+        constraints: [node.role == worker]
      # sesuaikan nama domain 
       labels:
         - traefik.frontend.rule=Host:sikn.nama_simpul.go.id
@@ -133,12 +153,6 @@ services:
     depends_on:
       - nama_simpul
       
-volumes:
-  percona_data:
-    driver: local
-  elasticsearch_data:
-    driver: local
-
 networks:
   net_cache:
     driver: overlay
