@@ -111,8 +111,8 @@ services:
       
     # sesuaikan lokasi volume 
     volumes:
-      - /mnt/docker_volume/nama_simpul/:/atom/src:ro
-      - /mnt/docker_volume/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - /sikn/nama_simpul/:/atom/src:ro
+      - /sikn/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
     networks:
       - net_http
       - traefik-public
