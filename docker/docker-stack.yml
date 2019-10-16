@@ -16,10 +16,10 @@ services:
       placement:
         constraints: [node.role == worker]    
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 1024M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 512M
     #  mode: global
@@ -27,7 +27,7 @@ services:
    # ports:
    #   - 63002:9200
     volumes:
-      - /sikn/elasticsearch_data:/usr/share/elasticsearch/data
+      - /sikn/nama_simpul/elasticsearch_data:/usr/share/elasticsearch/data
 
     networks:
       - net_search
@@ -50,10 +50,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 512M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 256M
     networks:
@@ -67,10 +67,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 64M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 64M
     networks:
@@ -84,10 +84,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 64M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 64M
     networks:
@@ -106,10 +106,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 64M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 64M
     networks:
@@ -140,10 +140,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 64M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 64M  
       
@@ -180,10 +180,10 @@ services:
         constraints: [node.role == worker]
       replicas: 1
       resources:
-       limits:
+        limits:
           cpus: '0.50'
           memory: 64M
-       reservations:
+        reservations:
           cpus: '0.25'
           memory: 64M
      # sesuaikan nama domain 
