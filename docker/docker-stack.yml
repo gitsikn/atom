@@ -69,10 +69,10 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 64M
+          memory: 128M
         reservations:
           cpus: '0.25'
-          memory: 64M
+          memory: 128M
     networks:
       - net_cache
       - net_jobs
@@ -108,10 +108,10 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 64M
+          memory: 128M
         reservations:
           cpus: '0.25'
-          memory: 64M
+          memory: 128M
     networks:
       - net_cache
       - net_db
