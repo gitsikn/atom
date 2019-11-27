@@ -42,7 +42,8 @@ services:
     volumes:
       - /sikn/nama_simpul/percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
-      - /sikn/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
+      - /sikn/nama_simpul/docker/etc/mysqld.cnf/:/etc/mysql/mysqld.cnf
+      
 
     networks:
       - net_db
