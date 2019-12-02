@@ -4,7 +4,7 @@ services:
 
 #Elasticsearch
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.16
     environment:
       #- bootstrap.memory_lock=true
       - xpack.security.enabled=false
@@ -35,7 +35,7 @@ services:
 #sesuaikan konfigurasi database
 #percona_database
   percona:
-    image: percona:5.6
+    image: percona:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=my-secret-pw
       - MYSQL_DATABASE=nama_simpul
@@ -94,9 +94,9 @@ services:
       - net_cache
       - net_jobs  
   
-#atom (source stable/2.4.x)      
+#atom (source qa/2.6.x)      
   atom:
-    image: pusatsiknjikn/atom:2.4.x
+    image: pusatsiknjikn/atom:qa.2.6.x
     command: fpm
     # sesuaikan lokasi volume 
     volumes:
@@ -131,10 +131,14 @@ services:
 
 #nama_simpul worker      
   worker:
-    image: pusatsiknjikn/atom:2.4.x
+    image: pusatsiknjikn/atom:qa.2.6.x
     command: worker
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
+    depends_on:
+      - gearmand
+      - percona
+    restart: on-failure:5 
     deploy:
       placement:
         constraints: [node.role == worker]
