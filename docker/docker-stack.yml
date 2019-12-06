@@ -131,7 +131,7 @@ services:
 
 #nama_simpul worker      
   worker:
-    image: pusatsiknjikn/atom:qa.2.4.x
+    image: pusatsiknjikn/atom:2.4.x
     command: worker
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
@@ -175,7 +175,7 @@ services:
     # sesuaikan lokasi volume 
     volumes:
       - /sikn/nama_simpul/:/atom/src:ro
-      - /sikn/nama_simpul/docker/etc/nginx/prod.conf:/etc/nginx/nginx.conf:ro
+      - /sikn/nama_simpul/docker/etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - net_http
       - traefik-public
