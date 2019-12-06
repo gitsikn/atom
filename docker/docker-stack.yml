@@ -13,8 +13,8 @@ services:
  #untuk batasan resource dapat menggunakan seperti contoh di bawah
         
     deploy:
-      placement:
-        constraints: [node.role == worker]    
+      #placement:
+        #constraints: [node.role == worker]    
       resources:
         limits:
           cpus: '0.50'
@@ -46,8 +46,8 @@ services:
       # sesuaikan lokasi volume 
       - /sikn/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
     deploy:
-      placement:
-        constraints: [node.role == worker]
+      #placement:
+        #constraints: [node.role == worker]
       replicas: 1
       resources:
         limits:
@@ -102,8 +102,8 @@ services:
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
     deploy:
-      placement:
-        constraints: [node.role == worker]
+      #placement:
+        #constraints: [node.role == worker]
       replicas: 1
       resources:
         limits:
@@ -140,8 +140,8 @@ services:
       - percona
 
     deploy:
-      placement:
-        constraints: [node.role == worker]
+      #placement:
+        #constraints: [node.role == worker]
       replicas: 1
       resources:
         limits:
@@ -180,8 +180,8 @@ services:
       - net_http
       - traefik-public
     deploy:
-      placement:
-        constraints: [node.role == worker]
+      #placement:
+        #constraints: [node.role == worker]
       replicas: 1
       resources:
         limits:
