@@ -26,6 +26,8 @@ services:
     networks:
       - agent-network
       - traefik-public
+    ports:
+      - 9000:9000
     deploy:
       placement:
         constraints:
