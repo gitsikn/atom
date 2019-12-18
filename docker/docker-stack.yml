@@ -12,7 +12,7 @@ services:
       
  #untuk batasan resource dapat menggunakan seperti contoh di bawah
         
-    #deploy:
+    deploy:
       #placement:
         #constraints: [node.role == worker]    
       #resources:
@@ -45,10 +45,10 @@ services:
       - /sikn/nama_simpul/percona_data:/var/lib/mysql:rw
       # sesuaikan lokasi volume 
       - /sikn/nama_simpul/docker/etc/mysql/conf.d/:/etc/mysql/conf.d:ro
-    #deploy:
+    deploy:
       #placement:
         #constraints: [node.role == worker]
-      #replicas: 1
+      replicas: 1
       #resources:
       #  limits:
       #    cpus: '0.50'
@@ -62,10 +62,10 @@ services:
   memcached:
     image: memcached
     command: -p 11211 -m 128 -u memcache
-    #deploy:
+    deploy:
     #  placement:
     #    constraints: [node.role == worker]
-    #  replicas: 1
+      replicas: 1
     #  resources:
     #    limits:
     #      cpus: '0.50'
@@ -79,10 +79,10 @@ services:
 #gearmand
   gearmand:
     image: artefactual/gearmand
-   # deploy:
+    deploy:
    #   placement:
    #     constraints: [node.role == worker]
-   #   replicas: 1
+      replicas: 1
    #   resources:
    #     limits:
    #       cpus: '0.50'
@@ -101,10 +101,10 @@ services:
     # sesuaikan lokasi volume 
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
-    #deploy:
+    deploy:
       #placement:
         #constraints: [node.role == worker]
-    #  replicas: 1
+      replicas: 1
     #  resources:
     #    limits:
     #      cpus: '0.50'
@@ -139,10 +139,10 @@ services:
       - gearmand
       - percona
 
-    #deploy:
+    deploy:
       #placement:
         #constraints: [node.role == worker]
-    #  replicas: 1
+      replicas: 1
     #  resources:
     #    limits:
     #      cpus: '0.50'
@@ -182,7 +182,7 @@ services:
     deploy:
       #placement:
         #constraints: [node.role == worker]
-      #replicas: 1
+      replicas: 1
       #resources:
         #limits:
           #cpus: '0.50'
