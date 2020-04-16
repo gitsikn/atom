@@ -135,6 +135,7 @@ services:
     command: worker
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
+      - /sikn/nama_simpul/sikn.pem/:/usr/local/share/ca-certificates/sikn.pem
     depends_on:
       - gearmand
       - percona
