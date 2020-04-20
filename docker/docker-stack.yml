@@ -101,6 +101,7 @@ services:
     # sesuaikan lokasi volume 
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
+      - /sikn/nama_simpul/ca-certificates/:/usr/local/share/ca-certificates/:rw
     deploy:
       #placement:
         #constraints: [node.role == worker]
@@ -135,7 +136,7 @@ services:
     command: worker
     volumes:
       - /sikn/nama_simpul/:/atom/src:rw
-      - /sikn/nama_simpul/ca-certificates/:/usr/local/share/ca-certificates:ro
+      - /sikn/nama_simpul/ca-certificates/:/usr/local/share/ca-certificates/:rw
     depends_on:
       - gearmand
       - percona
